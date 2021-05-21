@@ -6,7 +6,10 @@ const routes: RouteConfig[] = [
     component: () => import('layouts/MainLayout.vue'),
     children: [
       { path: '/', name: 'home' , component: () => import('pages/PageHome.vue') },
-      { path: '/singup', name: 'singup' , component: () => import('pages/PageSingup.vue') }
+      { path: '/singup', name: 'singup' , component: () => import('pages/PageSingup.vue') },
+      { path: '/singin', name: 'singin' , component: () => import('pages/PageSingin.vue') },
+      { path: '/notes', name: 'notes' , component: () => import('pages/PageNotes.vue') }
+
     ]
   },
   {

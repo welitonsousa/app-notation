@@ -7,7 +7,7 @@ class Validations {
   }
 
   passwordValidator(password: String) {
-    return password.length > 7 || "min 8 caracteres";
+    return password.length > 5 || "min 6 caracteres";
   }
 
   confirmPasswordValidator(password: String, confirmPassword: String) {

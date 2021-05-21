@@ -10,7 +10,7 @@
       <q-card class="col-12 col-md-3">
         <q-card-section>
           <div class="column">  
-            <q-btn color="primary" label="Login"/>
+            <q-btn color="primary" label="Login" @click="goToSingin"/>
             <div class="q-pa-md"/>
             <p>Não possui conta?</p>
             <q-btn color="secondary" @click="goToSingup" label="Cadastre-se"/>
@@ -31,6 +31,9 @@ export default class Home extends Vue {
 
   goToSingup() {
     this.$router.push({name: 'singup'})
+  }
+  goToSingin() {
+    this.$router.push({name: 'singin'})
   }
 
 }
