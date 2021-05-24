@@ -37,9 +37,11 @@
 <script lang="ts">
 import { Vue, Component } from "vue-property-decorator";
 import { Validations } from "src/utils/validations";
+import { IUser } from "src/models/modelUser";
 
 @Component
 export default class Home extends Vue {
+  [x: string]: any;
   email = "";
   password = "";
   validations = new Validations();
@@ -58,8 +60,10 @@ export default class Home extends Vue {
         message: response.data.message,
         color: "green"
       });
-      await localStorage.setItem('token', response.data.token);
-      this.$router.push({name: "notes"})
+
+      const user = response.data as IUser;
+      await localStorage.setItem("user", JSON.stringify(user));
+      this.$router.push({ name: "notes" });
     } catch (error) {
       try {
         this.$q.notify({

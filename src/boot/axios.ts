@@ -8,7 +8,7 @@ declare module 'vue/types/vue' {
 }
 
 const newInstanceAxios = axios.create({
-  baseURL: "https://apinotation.herokuapp.com"
+  baseURL: "https://apinotation.herokuapp.com",
 });
 
 export default boot(({ Vue }) => {
