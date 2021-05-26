@@ -63,6 +63,7 @@ export default class Home extends Vue {
 
       const user = response.data as IUser;
       await localStorage.setItem("user", JSON.stringify(user));
+      await localStorage.setItem("token", user.token);
       this.$router.push({ name: "notes" });
     } catch (error) {
       try {

@@ -9,6 +9,7 @@ declare module 'vue/types/vue' {
 
 const newInstanceAxios = axios.create({
   baseURL: "https://apinotation.herokuapp.com",
+  headers: {Authorization: `Bearer ${localStorage.getItem('token') || ""}`}
 });
 
 export default boot(({ Vue }) => {
