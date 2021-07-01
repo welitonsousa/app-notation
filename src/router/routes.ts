@@ -8,14 +8,14 @@ const routes: RouteConfig[] = [
       { path: '/', name: 'home' , component: () => import('pages/PageHome.vue') },
       { path: '/singup', name: 'singup' , component: () => import('pages/PageSingup.vue') },
       { path: '/singin', name: 'singin' , component: () => import('pages/PageSingin.vue') },
+      { path: '/who', name: 'who' , component: () => import('pages/PageWho.vue') },
     ]
   },
   {
     path: '/notes',
     component: () => import('layouts/LayoutAuthenticate.vue'),
     children: [
-      { path: '/notes', name: 'notes' , component: () => import('pages/PageNotes.vue') }
-
+      { path: '/notes', name: 'notes' , component: () => import('pages/PageNotes.vue') },
     ]
   },
   {

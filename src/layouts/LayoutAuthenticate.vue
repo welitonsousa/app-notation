@@ -2,9 +2,10 @@
   <q-layout view="lHh Lpr lFf">
     <q-header elevated>
       <q-toolbar>
-        <q-toolbar-title>
-          App Notation
+        <q-toolbar-title class="row">
+          <div class="pr-50" @click="toHome">App Notation</div>
         </q-toolbar-title>
+
         <q-btn-dropdown color="white" text-color="black" :label="userName">
           <q-list>
             <q-item clickable v-close-popup @click="logOut">
@@ -21,6 +22,14 @@
     </q-page-container>
   </q-layout>
 </template>
+
+
+<style scoped>
+.pr-50 {
+  padding-right: 50px;
+}
+</style>
+
 
 <script lang="ts">
 import { IUser } from "src/models/modelUser";
@@ -41,6 +50,10 @@ export default class Layout extends Vue {
     } catch (error) {
       this.$router.push({ name: "home" });
     }
+  }
+
+  toHome() {
+    this.$router.push({ name: "notes" });
   }
 
   async logOut() {
