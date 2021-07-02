@@ -6,7 +6,7 @@
       <q-card class="col-12 col-md-3">
         <q-card-section>
           <div class="title">Login</div>
-          <q-form @submit="singin">
+          <q-form @submit="login">
             <div class="column">
               <q-input
                 v-model="email"
@@ -47,7 +47,7 @@ export default class Home extends Vue {
   validations = new Validations();
   loading = false;
 
-  async singin() {
+  async login() {
     this.loading = true;
     try {
       const response = await this.$axios.post("/sign", {

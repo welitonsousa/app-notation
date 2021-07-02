@@ -6,7 +6,7 @@
       <q-card class="col-12 col-md-3">
         <q-card-section>
           <div class="title">Cadastro</div>
-          <q-form @submit="singup">
+          <q-form @submit="create">
             <div class="column">
               <q-input
                 v-model="name"
@@ -64,7 +64,7 @@ export default class Home extends Vue {
   validations = new Validations();
 
   loading = false;
-  async singup() {
+  async create() {
     this.loading = true;
     try {
       const response = await this.$axios.post("/users", {
@@ -77,6 +77,7 @@ export default class Home extends Vue {
         message: response.data.message,
         color: "green"
       });
+      this.$router.push({name: 'login'})
     } catch (error) {
       try {
         this.$q.notify({

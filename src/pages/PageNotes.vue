@@ -24,33 +24,43 @@
       </template>
     </q-table>
     <q-dialog v-model="openModal" persistent>
-      <q-card style="width: 700px; max-width: 80vw;">
-        <q-form @submit="putNotation">
+      <q-card style="width: 700px; max-width: 80vw">
+        <q-form @submit="selectedNoteId ? putNotation() : postNotation()">
           <q-card-section class="row">
             <div class="width">
               <q-input
                 label="Titulo da nota"
                 v-model="selectedNoteTitle"
                 class="q-pb-lg"
-                :rules="[val => val.length != 0 || 'Titulo inválido']"
+                :rules="[(val) => val.length != 0 || 'Titulo inválido']"
               />
               <q-input
                 v-model="selectedNoteBody"
                 filled
                 autogrow
                 label="Nota"
-                :rules="[val => val.length != 0 || 'Titulo inválido']"
+                :rules="[(val) => val.length != 0 || 'Nota inválida']"
               />
             </div>
           </q-card-section>
 
           <q-card-actions align="right">
+            <q-btn
+              v-if="selectedNoteId"
+              flat
+              label="Deletar"
+              color="red"
+              @click="deleteNote"
+            />
             <q-btn flat label="Calcelar" color="primary" v-close-popup />
-            <q-btn flat label="Salvar" type="submit" color="primary"/>
+            <q-btn flat label="Salvar" type="submit" color="primary" />
           </q-card-actions>
         </q-form>
       </q-card>
     </q-dialog>
+    <q-page-sticky position="bottom-right" :offset="[18, 18]">
+      <q-btn fab icon="add" color="accent" @click="openPostModalClick" />
+    </q-page-sticky>
   </div>
 </template>
 
@@ -77,27 +87,62 @@ export default class Notes extends Vue {
     this.openModal = true;
   }
 
+  openPostModalClick() {
+    this.selectedNoteTitle = "";
+    this.selectedNoteBody = "";
+    this.selectedNoteId = "";
+    this.openModal = true;
+  }
+
   created() {
     this.isAuthenticate();
     this.getNotation();
   }
 
-  async getNotation() {
+  async deleteNote() {
     try {
-      const response = await this.$axios.get("/notation");
-      console.log(response.data);
-      this.dataOriginal = response.data.notations as INotation[];
-      this.data = this.dataOriginal;
+      await this.$axios.delete("/notation/", {
+        data: { id: this.selectedNoteId },
+      });
+      await this.getNotation();
+      this.openModal = false;
+      this.$q.notify({
+        message: "Nota deletada",
+        color: "green",
+      });
     } catch (error) {
       try {
         this.$q.notify({
           message: error.response.data.message,
-          color: "red-5"
+          color: "red-5",
         });
       } catch (e) {
         this.$q.notify({
           message: "Ops, algo deu errado",
-          color: "red-5"
+          color: "red-5",
+        });
+      }
+    }
+  }
+
+  async getNotation() {
+    try {
+      await setTimeout(async () => {
+        const response = await this.$axios.get("/notation");
+        console.log(response.data);
+        this.dataOriginal = response.data.notations as INotation[];
+        this.data = this.dataOriginal;
+      }, 1000);
+    } catch (error) {
+      try {
+        this.$q.notify({
+          message: error.response.data.message,
+          color: "red-5",
+        });
+      } catch (e) {
+        this.$q.notify({
+          message: "Ops, algo deu errado",
+          color: "red-5",
         });
       }
     }
@@ -107,10 +152,10 @@ export default class Notes extends Vue {
   filter() {
     this.data = [
       ...this.dataOriginal.filter(
-        e =>
+        (e) =>
           e.title.toLowerCase().includes(this.filterKey.toLowerCase()) ||
           e.body.toLowerCase().includes(this.filterKey.toLowerCase())
-      )
+      ),
     ];
   }
 
@@ -119,39 +164,55 @@ export default class Notes extends Vue {
       const response = await this.$axios.put("/notation", {
         id: this.selectedNoteId,
         title: this.selectedNoteTitle,
-        body: this.selectedNoteBody
+        body: this.selectedNoteBody,
       });
       this.$q.notify({
         message: response.data.message,
-        color: "green"
+        color: "green",
       });
 
-      for(let index = 0; index < this.dataOriginal.length; index++){
-        if (this.dataOriginal[index].id === this.selectedNoteId){          
-          this.dataOriginal[index].title = this.selectedNoteTitle;
-          this.dataOriginal[index].body = this.selectedNoteBody;
-          break;
-        }
-      }
-      for(let index = 0; index < this.data.length; index++){
-        if (this.data[index].id === this.selectedNoteId){
-          this.data[index].title = this.selectedNoteTitle;
-          this.data[index].body = this.selectedNoteBody;
-          break;
-        } 
-      }
+      await this.getNotation();
 
       this.openModal = false;
     } catch (error) {
       try {
         this.$q.notify({
           message: error.response.data.message,
-          color: "red-5"
+          color: "red-5",
         });
       } catch (e) {
         this.$q.notify({
           message: "Ops. algo deu errado",
-          color: "red-5"
+          color: "red-5",
+        });
+      }
+    }
+  }
+
+  async postNotation() {
+    try {
+      const response = await this.$axios.post("/notation", {
+        title: this.selectedNoteTitle,
+        body: this.selectedNoteBody,
+      });
+      await this.getNotation();
+      
+      this.$q.notify({
+        message: response.data.message,
+        color: "green",
+      });
+
+      this.openModal = false;
+    } catch (error) {
+      try {
+        this.$q.notify({
+          message: error.response.data.message,
+          color: "red-5",
+        });
+      } catch (e) {
+        this.$q.notify({
+          message: "Ops. algo deu errado",
+          color: "red-5",
         });
       }
     }
@@ -164,18 +225,18 @@ export default class Notes extends Vue {
       modelUser = JSON.parse(user);
     } catch (error) {
       this.$router.push({
-        name: "home"
+        name: "home",
       });
     }
   }
 
   columns = [
     {
-      field: (row: any) => `Titulo: ${row.title}`
+      field: (row: any) => `Titulo: ${row.title}`,
     },
     {
-      field: (row: any) => row.body
-    }
+      field: (row: any) => row.body,
+    },
   ];
 }
 </script>

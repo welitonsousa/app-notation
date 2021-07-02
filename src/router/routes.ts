@@ -6,9 +6,11 @@ const routes: RouteConfig[] = [
     component: () => import('layouts/MainLayout.vue'),
     children: [
       { path: '/', name: 'home' , component: () => import('pages/PageHome.vue') },
-      { path: '/singup', name: 'singup' , component: () => import('pages/PageSingup.vue') },
-      { path: '/singin', name: 'singin' , component: () => import('pages/PageSingin.vue') },
+      { path: '/create', name: 'create' , component: () => import('src/pages/PageCreateUser.vue') },
+      { path: '/login', name: 'login' , component: () => import('pages/PageLogin.vue') },
       { path: '/who', name: 'who' , component: () => import('pages/PageWho.vue') },
+      { path: '/contact', name: 'contact' , component: () => import('pages/PageContact.vue') },
+
     ]
   },
   {

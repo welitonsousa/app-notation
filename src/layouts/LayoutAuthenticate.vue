@@ -4,9 +4,11 @@
       <q-toolbar>
         <q-toolbar-title class="row">
           <div class="pr-50" @click="toHome">App Notation</div>
+          <div class="pr-50" @click="toWho">Quem somos</div>
+          <div class="pr-50" @click="toContact">Contato</div>
         </q-toolbar-title>
 
-        <q-btn-dropdown color="white" text-color="black" :label="userName">
+        <q-btn-dropdown v-if="userName != ''" color="white" text-color="black" :label="userName">
           <q-list>
             <q-item clickable v-close-popup @click="logOut">
               <q-item-section>
@@ -41,7 +43,8 @@ export default class Layout extends Vue {
   userName = "";
   created() {
     this.getUser();
-  }
+  }  
+
   async getUser() {
     try {
       const user = JSON.parse((await localStorage.getItem("user")) || "");
@@ -55,9 +58,16 @@ export default class Layout extends Vue {
   toHome() {
     this.$router.push({ name: "notes" });
   }
+  toWho() {
+    this.$router.push({ name: "who" });
+  }
+  toContact() {
+    this.$router.push({ name: "contact" });
+  }
 
   async logOut() {
     await localStorage.clear();
+    this.userName = "";
     this.$router.push({ name: "home" });
   }
 }
