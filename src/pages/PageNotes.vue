@@ -59,7 +59,7 @@
       </q-card>
     </q-dialog>
     <q-page-sticky position="bottom-right" :offset="[18, 18]">
-      <q-btn fab icon="add" color="accent" @click="openPostModalClick" />
+      <q-btn fab icon="add" color="blue" @click="openPostModalClick" />
     </q-page-sticky>
   </div>
 </template>

@@ -121,7 +121,7 @@
             </a>
           </div>
           <div class="col-6">
-            <q-img class="max-heght" src="../../assets/images/who/weliton.png">
+            <q-img class="max-heght" src="../../assets/images/who/weliton.jpg">
               <div class="absolute-bottom text-subtitle1 text-center">
                 Weliton
               </div>

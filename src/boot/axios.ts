@@ -11,11 +11,11 @@ declare module 'vue/types/vue' {
 const newInstanceAxios = axios.create({
   baseURL: "https://apinotation.herokuapp.com",
   headers: {Authorization: `Bearer ${localStorage.getItem('token') || ""}`}
-
 });
 
 export default boot(({ Vue }) => {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+  console.log(newInstanceAxios);
   
   Vue.prototype.$axios = newInstanceAxios;
 });
