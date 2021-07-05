@@ -1,66 +1,76 @@
 <template>
   <div>
-    <q-table
-      grid
-      title="Minhas notas"
-      row-key="id"
-      hide-header
-      :data="data"
-      :columns="columns"
-      @row-click="noteClick"
-    >
-      <template v-slot:top-right>
-        <q-input
-          borderless
-          dense
-          debounce="300"
-          placeholder="Buscar"
-          v-model="filterKey"
-        >
-          <template v-slot:append>
-            <q-icon name="search" />
-          </template>
-        </q-input>
-      </template>
-    </q-table>
-    <q-dialog v-model="openModal" persistent>
-      <q-card style="width: 700px; max-width: 80vw">
-        <q-form @submit="selectedNoteId ? putNotation() : postNotation()">
-          <q-card-section class="row">
-            <div class="width">
-              <q-input
-                label="Titulo da nota"
-                v-model="selectedNoteTitle"
-                class="q-pb-lg"
-                :rules="[(val) => val.length != 0 || 'Titulo inválido']"
-              />
-              <q-input
-                v-model="selectedNoteBody"
-                filled
-                autogrow
-                label="Nota"
-                :rules="[(val) => val.length != 0 || 'Nota inválida']"
-              />
-            </div>
-          </q-card-section>
+    <div v-if="loading" class="text-center align-circular-progress-indicator">
+      <q-circular-progress
+      indeterminate
+      size="50px"
+      color="blue"
+      class="q-ma-md "
+    />
+    </div>
+    <div v-else>
+      <q-table
+        grid
+        title="Minhas notas"
+        row-key="id"
+        hide-header
+        :data="data"
+        :columns="columns"
+        @row-click="noteClick"
+      >
+        <template v-slot:top-right>
+          <q-input
+            borderless
+            dense
+            debounce="300"
+            placeholder="Buscar"
+            v-model="filterKey"
+          >
+            <template v-slot:append>
+              <q-icon name="search" />
+            </template>
+          </q-input>
+        </template>
+      </q-table>
+      <q-dialog v-model="openModal" persistent>
+        <q-card style="width: 700px; max-width: 80vw">
+          <q-form @submit="selectedNoteId ? putNotation() : postNotation()">
+            <q-card-section class="row">
+              <div class="width">
+                <q-input
+                  label="Titulo da nota"
+                  v-model="selectedNoteTitle"
+                  class="q-pb-lg"
+                  :rules="[(val) => val.length != 0 || 'Titulo inválido']"
+                />
+                <q-input
+                  v-model="selectedNoteBody"
+                  filled
+                  autogrow
+                  label="Nota"
+                  :rules="[(val) => val.length != 0 || 'Nota inválida']"
+                />
+              </div>
+            </q-card-section>
 
-          <q-card-actions align="right">
-            <q-btn
-              v-if="selectedNoteId"
-              flat
-              label="Deletar"
-              color="red"
-              @click="deleteNote"
-            />
-            <q-btn flat label="Calcelar" color="primary" v-close-popup />
-            <q-btn flat label="Salvar" type="submit" color="primary" />
-          </q-card-actions>
-        </q-form>
-      </q-card>
-    </q-dialog>
-    <q-page-sticky position="bottom-right" :offset="[18, 18]">
-      <q-btn fab icon="add" color="blue" @click="openPostModalClick" />
-    </q-page-sticky>
+            <q-card-actions align="right">
+              <q-btn
+                v-if="selectedNoteId"
+                flat
+                label="Deletar"
+                color="red"
+                @click="deleteNote"
+              />
+              <q-btn flat label="Calcelar" color="primary" v-close-popup />
+              <q-btn flat label="Salvar" type="submit" color="primary" />
+            </q-card-actions>
+          </q-form>
+        </q-card>
+      </q-dialog>
+      <q-page-sticky position="bottom-right" :offset="[18, 18]">
+        <q-btn fab icon="add" color="blue" @click="noteClick" />
+      </q-page-sticky>
+    </div>
   </div>
 </template>
 
@@ -75,28 +85,23 @@ export default class Notes extends Vue {
   dataOriginal: INotation[] = [];
   filterKey = "";
   openModal = false;
-
+  loading = true;
   selectedNoteTitle: string = "";
   selectedNoteId: string = "";
   selectedNoteBody: string = "";
 
   noteClick(_: any, notation: INotation) {
-    this.selectedNoteTitle = notation.title;
-    this.selectedNoteBody = notation.body;
-    this.selectedNoteId = notation.id;
-    this.openModal = true;
-  }
-
-  openPostModalClick() {
-    this.selectedNoteTitle = "";
-    this.selectedNoteBody = "";
-    this.selectedNoteId = "";
+    this.selectedNoteTitle = notation.title || "";
+    this.selectedNoteBody = notation.body || "";
+    this.selectedNoteId = notation.id || "";
     this.openModal = true;
   }
 
   created() {
     this.isAuthenticate();
-    this.getNotation();
+    this.getNotation().then(() => {
+      this.loading = false;
+    });
   }
 
   async deleteNote() {
@@ -127,12 +132,12 @@ export default class Notes extends Vue {
 
   async getNotation() {
     try {
-      await setTimeout(async () => {
-        const response = await this.$axios.get("/notation");
-        console.log(response.data);
-        this.dataOriginal = response.data.notations as INotation[];
-        this.data = this.dataOriginal;
-      }, 1000);
+      this.$axios.defaults.headers = {
+        Authorization: `Bearer ${(await localStorage.getItem("token")) || ""}`,
+      };
+      const response = await this.$axios.get("/notation");
+      this.dataOriginal = response.data.notations as INotation[];
+      this.data = this.dataOriginal;
     } catch (error) {
       try {
         this.$q.notify({
@@ -196,7 +201,7 @@ export default class Notes extends Vue {
         body: this.selectedNoteBody,
       });
       await this.getNotation();
-      
+
       this.$q.notify({
         message: response.data.message,
         color: "green",
@@ -244,5 +249,8 @@ export default class Notes extends Vue {
 <style scoped>
 .width {
   width: 100%;
+}
+.align-circular-progress-indicator{
+  padding-top: 40vh;
 }
 </style>
