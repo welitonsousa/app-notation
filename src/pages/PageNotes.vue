@@ -14,6 +14,8 @@
         title="Minhas notas"
         row-key="id"
         hide-header
+        rows-per-page-label="Itens por página"
+        no-data-label="Nenhum nota salva"
         :data="data"
         :columns="columns"
         @row-click="noteClick"
@@ -41,7 +43,7 @@
                   label="Titulo da nota"
                   v-model="selectedNoteTitle"
                   class="q-pb-lg"
-                  :rules="[(val) => val.length != 0 || 'Titulo inválido']"
+                  :rules="[(val) => val.length != 0 && val.length <= 60 || 'Titulo inválido']"
                 />
                 <q-input
                   v-model="selectedNoteBody"
@@ -61,7 +63,7 @@
                 color="red"
                 @click="deleteNote"
               />
-              <q-btn flat label="Calcelar" color="primary" v-close-popup />
+              <q-btn flat label="Cancelar" color="primary" v-close-popup />
               <q-btn flat label="Salvar" type="submit" color="primary" />
             </q-card-actions>
           </q-form>
@@ -237,11 +239,8 @@ export default class Notes extends Vue {
 
   columns = [
     {
-      field: (row: any) => `Titulo: ${row.title}`,
-    },
-    {
-      field: (row: any) => row.body,
-    },
+      field: (row: any) => `${row.title}`,
+    }
   ];
 }
 </script>

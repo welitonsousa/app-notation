@@ -2,13 +2,35 @@
   <q-layout view="lHh Lpr lFf">
     <q-header elevated>
       <q-toolbar>
-        <q-toolbar-title class="row">
+        <q-toolbar-title class="mobile-button">
+          <q-btn color="white" text-color="black" label="Menu">
+            <q-menu fit>
+              <q-list style="min-width: 100px">
+                <q-item clickable>
+                  <q-item-section @click="toHome">App Notation</q-item-section>
+                </q-item>
+                <q-item clickable>
+                  <q-item-section @click="toWho">Quem somos</q-item-section>
+                </q-item>
+                <q-item clickable>
+                  <q-item-section @click="toContact">Contato</q-item-section>
+                </q-item>
+              </q-list>
+            </q-menu>
+          </q-btn>
+        </q-toolbar-title>
+        <q-toolbar-title class="row desktop-buttons">
           <div class="pr-50" @click="toHome">App Notation</div>
           <div class="pr-50" @click="toWho">Quem somos</div>
           <div class="pr-50" @click="toContact">Contato</div>
         </q-toolbar-title>
 
-        <q-btn-dropdown v-if="userName != ''" color="white" text-color="black" :label="userName">
+        <q-btn-dropdown
+          v-if="userName != ''"
+          color="white"
+          text-color="black"
+          :label="userName"
+        >
           <q-list>
             <q-item clickable v-close-popup @click="logOut">
               <q-item-section>
@@ -29,13 +51,24 @@
 <style scoped>
 .pr-50 {
   padding-right: 50px;
+  cursor: pointer;
+}
+@media (max-width: 600px) {
+  .desktop-buttons {
+    display: none;
+  }
+}
+@media (min-width: 601px) {
+  .mobile-button {
+    display: none;
+  }
 }
 </style>
 
 
 <script lang="ts">
 import { IUser } from "src/models/modelUser";
-import { Vue, Component, Watch } from "vue-property-decorator";
+import { Vue, Component } from "vue-property-decorator";
 
 @Component
 export default class Layout extends Vue {
@@ -43,7 +76,7 @@ export default class Layout extends Vue {
   userName = "";
   created() {
     this.getUser();
-  }  
+  }
 
   async getUser() {
     try {
