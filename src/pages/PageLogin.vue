@@ -54,7 +54,6 @@ export default class Home extends Vue {
         email: this.email,
         password: this.password
       });
-      console.log(response.data);
 
       this.$q.notify({
         message: response.data.message,

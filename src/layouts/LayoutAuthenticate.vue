@@ -10,6 +10,9 @@
                   <q-item-section @click="toHome">App Notation</q-item-section>
                 </q-item>
                 <q-item clickable>
+                  <q-item-section @click="toAbout">Sobre</q-item-section>
+                </q-item>
+                <q-item clickable>
                   <q-item-section @click="toWho">Quem somos</q-item-section>
                 </q-item>
                 <q-item clickable>
@@ -21,6 +24,7 @@
         </q-toolbar-title>
         <q-toolbar-title class="row desktop-buttons">
           <div class="pr-50" @click="toHome">App Notation</div>
+          <div class="pr-50" @click="toAbout">Sobre</div>
           <div class="pr-50" @click="toWho">Quem somos</div>
           <div class="pr-50" @click="toContact">Contato</div>
         </q-toolbar-title>
@@ -90,6 +94,9 @@ export default class Layout extends Vue {
 
   toHome() {
     this.$router.push({ name: "notes" });
+  }
+  toAbout() {
+    this.$router.push({ name: "about" });
   }
   toWho() {
     this.$router.push({ name: "who" });

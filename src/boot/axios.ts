@@ -14,8 +14,6 @@ const newInstanceAxios = axios.create({
 });
 
 export default boot(({ Vue }) => {
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-  console.log(newInstanceAxios);
-  
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access  
   Vue.prototype.$axios = newInstanceAxios;
 });
