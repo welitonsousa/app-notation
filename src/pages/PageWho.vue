@@ -18,7 +18,7 @@
           <div class="col-12 col-md-6 text-justify q-pa-lg">
             <h5>Darice Sousa</h5>
             <p>
-              Formada no ensino médio integrado ao tectnico em informática pelo
+              Formada no ensino médio integrado ao técnico em informática pelo
               Instituto Federal do Piauí
             </p>
             <p>
@@ -45,7 +45,7 @@
             <p>Estudante de sitema de informação</p>
 
             <p>Focado atualmente em terminar os estudos.</p>
-            <p>A linguagem que tenho maior afinidade e 'C'</p>
+            <p>A linguagem que tenho maior afinidade é 'C'</p>
             <a href="mailto:isdael.oliveria@gmail.com">
               isdael.oliveria@gmail.com
             </a>
@@ -82,7 +82,7 @@
             <p>
               Atualmente focado em mudar o mundo mesmo que em pequenas ações.
             </p>
-            <p>A linguagem que tenho maior afinidade e 'Python'</p>
+            <p>A linguagem que tenho maior afinidade é 'Python'</p>
             <a href="mailto:hunter404paulo@gmail.com">
               hunter404paulo@gmail.com
             </a>
@@ -102,7 +102,7 @@
           <div class="col-12 col-md-6 text-justify q-pa-lg">
             <h5>Weliton Sousa</h5>
             <p>
-              Formado no ensino médio integrado ao tectnico em informática pelo
+              Formado no ensino médio integrado ao técnico em informática pelo
               Instituto Federal do Piauí
             </p>
             <p>
@@ -135,8 +135,7 @@
       </div>
       <div class="col" />
     </div>
-    <br />
-    <br />
+    
     <br />
     <br />
   </div>

@@ -24,7 +24,7 @@
               <q-input
                 v-model="text"
                 outlined
-                label="Texto"
+                label="Mensagem"
                 type="text"
                 autogrow
                 :rules="[(val) => !!val || 'Campo inválido']"

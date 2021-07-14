@@ -2,7 +2,6 @@
   <div class="text-center">
     <div>
       <h3>App Notation</h3>
-      <p>{{ subtitle }}</p>
     </div>
     <div class="q-pa-md" />
     <div class="row">
@@ -28,8 +27,6 @@ import { Vue, Component } from "vue-property-decorator";
 
 @Component
 export default class Home extends Vue {
-  subtitle =
-    "No app notation você pode salvar suas notas em nuvem, sem se preocupar com segurança, pois aqui tudo é criptografado!";
   created() {
     this.isAuthenticate();
   }

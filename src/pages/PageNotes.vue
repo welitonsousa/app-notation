@@ -15,7 +15,7 @@
         row-key="id"
         hide-header
         rows-per-page-label="Itens por página"
-        no-data-label="Nenhum nota salva"
+        no-data-label="Nenhuma nota salva"
         :data="data"
         :columns="columns"
         @row-click="noteClick"
@@ -77,9 +77,9 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component, Watch } from "vue-property-decorator";
-import { IUser } from "src/models/modelUser";
-import { INotation } from "src/models/modelNotation";
+import { Vue, Component, Watch } from 'vue-property-decorator';
+import { IUser } from '../models/modelUser';
+import { INotation } from '../models/modelNotation';
 
 @Component
 export default class Notes extends Vue {
