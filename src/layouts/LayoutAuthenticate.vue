@@ -12,12 +12,6 @@
                 <q-item clickable>
                   <q-item-section @click="toAbout">Sobre</q-item-section>
                 </q-item>
-                <q-item clickable>
-                  <q-item-section @click="toWho">Quem somos</q-item-section>
-                </q-item>
-                <q-item clickable>
-                  <q-item-section @click="toContact">Contato</q-item-section>
-                </q-item>
               </q-list>
             </q-menu>
           </q-btn>
@@ -25,24 +19,9 @@
         <q-toolbar-title class="row desktop-buttons">
           <div class="pr-50" @click="toHome">App Notation</div>
           <div class="pr-50" @click="toAbout">Sobre</div>
-          <div class="pr-50" @click="toWho">Quem somos</div>
-          <div class="pr-50" @click="toContact">Contato</div>
         </q-toolbar-title>
-
-        <q-btn-dropdown
-          v-if="userName != ''"
-          color="white"
-          text-color="black"
-          :label="userName"
-        >
-          <q-list>
-            <q-item clickable v-close-popup @click="logOut">
-              <q-item-section>
-                <q-item-label>Sair</q-item-label>
-              </q-item-section>
-            </q-item>
-          </q-list>
-        </q-btn-dropdown>
+        <Avatar/>
+        
       </q-toolbar>
     </q-header>
     <q-page-container>
@@ -50,7 +29,6 @@
     </q-page-container>
   </q-layout>
 </template>
-
 
 <style scoped>
 .pr-50 {
@@ -69,46 +47,20 @@
 }
 </style>
 
-
 <script lang="ts">
-import { IUser } from "src/models/modelUser";
 import { Vue, Component } from "vue-property-decorator";
-
-@Component
+import Avatar from "pages/components/AvatarActions.vue"
+@Component({
+  components: {
+    Avatar
+  }
+})
 export default class Layout extends Vue {
-  user?: IUser;
-  userName = "";
-  created() {
-    this.getUser();
-  }
-
-  async getUser() {
-    try {
-      const user = JSON.parse((await localStorage.getItem("user")) || "");
-      this.user = user;
-      this.userName = this.user!.user || "";
-    } catch (error) {
-      this.$router.push({ name: "home" });
-    }
-  }
-
   toHome() {
     this.$router.push({ name: "notes" });
   }
   toAbout() {
     this.$router.push({ name: "about" });
-  }
-  toWho() {
-    this.$router.push({ name: "who" });
-  }
-  toContact() {
-    this.$router.push({ name: "contact" });
-  }
-
-  async logOut() {
-    await localStorage.clear();
-    this.userName = "";
-    this.$router.push({ name: "home" });
   }
 }
 </script>
