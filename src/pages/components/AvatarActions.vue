@@ -20,7 +20,11 @@
 
           <label class="file-select">
             <div class="select-button">Alterar Imagem</div>
-            <input type="file" @change="handleFileChange" accept="image/png, image/gif, image/jpeg"/>
+            <input
+              type="file"
+              @change="handleFileChange"
+              accept="image/png, image/gif, image/jpeg"
+            />
           </label>
         </div>
 
@@ -55,6 +59,7 @@
 <script lang="ts">
 import { IUser } from "src/models/modelUser";
 import { Vue, Component } from "vue-property-decorator";
+import { showMessage } from "src/utils/MessageError";
 import UpdatePass from "pages/components/ModalUpdatePass.vue";
 
 @Component({
@@ -85,7 +90,7 @@ export default class Avatar extends Vue {
     form.append("files", evt.target.files[0]);
 
     try {
-      this.loadingImage = true
+      this.loadingImage = true;
       const response = await this.$axios.put("/user/picture", form, {
         headers: { "Content-Type": "multipart/form-data" },
       });
@@ -93,42 +98,29 @@ export default class Avatar extends Vue {
       this.picture = response.data.picture;
       this.user!.picture = this.picture;
       localStorage.setItem("user", JSON.stringify(this.user));
-    } catch (error) {
-      try {
-        this.$q.notify({
-          message: error.response.data.message,
-          color: "red-5",
-        });
-      } catch (e) {
-        this.$q.notify({
-          message: "Ops, algo deu errado",
-          color: "red-5",
-        });
-      }
+    } catch (error: any) {
+      showMessage.error(error);
     } finally {
       this.loadingImage = false;
     }
   }
 
   async getUser() {
-    try {
-      const user = JSON.parse((await localStorage.getItem("user")) || "");
-      this.user = user;
-      this.userName = this.user!.user || "";
-      this.picture = this.user!.picture || "";
-    } catch (error) {
-      this.$router.push({ name: "home" });
-    }
+    const user = JSON.parse(localStorage.user || "");
+    this.user = user;
+    this.userName = this.user!.user || "";
+    this.picture = this.user!.picture || "";
   }
 
   async logOut() {
-    await localStorage.clear();
+    localStorage.clear();
     this.userName = "";
     this.picture = "";
     this.$router.push({ name: "home" });
   }
 }
 </script>
+
 <style scoped>
 .file-select > .select-button {
   padding: 0.5rem;

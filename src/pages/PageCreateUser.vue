@@ -12,32 +12,48 @@
                 v-model="name"
                 outlined
                 label="Nome de usuário"
-                :rules="[val => validations.userNameValidator(val)]"
+                :rules="[(val) => validations.userNameValidator(val)]"
               />
               <q-input
                 v-model="email"
                 outlined
                 label="Email"
-                :rules="[val => validations.emailValidator(val)]"
+                :rules="[(val) => validations.emailValidator(val)]"
               />
 
               <q-input
                 v-model="password"
                 outlined
                 label="Senha"
-                type="password"
-                :rules="[val => validations.passwordValidator(val)]"
-              />
+                :type="isPwdPass ? 'password' : 'text'"
+                :rules="[(val) => validations.passwordValidator(val)]"
+              >
+                <template v-slot:append>
+                  <q-icon
+                    :name="isPwdPass ? 'visibility_off' : 'visibility'"
+                    class="cursor-pointer"
+                    @click="isPwdPass = !isPwdPass"
+                  />
+                </template>
+              </q-input>
 
               <q-input
                 v-model="confirmPassowrd"
                 outlined
-                label="Confirmar senha"
-                type="password"
+                label="Confirme a senha"
+                :type="isPwdConfirmPass ? 'password' : 'text'"
                 :rules="[
-                  val => validations.confirmPasswordValidator(val, password)
+                  (val) => validations.confirmPasswordValidator(val, password),
                 ]"
-              />
+              >
+                <template v-slot:append>
+                  <q-icon
+                    :name="isPwdConfirmPass ? 'visibility_off' : 'visibility'"
+                    class="cursor-pointer"
+                    @click="isPwdConfirmPass = !isPwdConfirmPass"
+                  />
+                </template>
+              </q-input>
               <q-btn v-if="loading" color="primary">
                 <q-circular-progress indeterminate color="white" size="20px" />
               </q-btn>
@@ -54,6 +70,7 @@
 <script lang="ts">
 import { Vue, Component } from "vue-property-decorator";
 import { Validations } from "src/utils/validations";
+import { showMessage } from "src/utils/MessageError";
 
 @Component
 export default class Home extends Vue {
@@ -61,6 +78,8 @@ export default class Home extends Vue {
   email = "";
   password = "";
   confirmPassowrd = "";
+  isPwdPass = true;
+  isPwdConfirmPass = true;
   validations = new Validations();
 
   loading = false;
@@ -70,28 +89,15 @@ export default class Home extends Vue {
       const response = await this.$axios.post("/users", {
         name: this.name,
         email: this.email,
-        password: this.password
+        password: this.password,
       });
-
-      this.$q.notify({
-        message: response.data.message,
-        color: "green"
-      });
-      this.$router.push({name: 'login'})
-    } catch (error) {
-      try {
-        this.$q.notify({
-          message: error.response.data.message,
-          color: "red-5"
-        });
-      } catch (e) {
-        this.$q.notify({
-          message: "Erro ao cadastrar o usuario",
-          color: "red-5"
-        });
-      }
+      showMessage.success(response);
+      this.$router.push({ name: "login" });
+    } catch (error: any) {
+      showMessage.error(error);
+    } finally {
+      this.loading = false;
     }
-    this.loading = false;
   }
 }
 </script>

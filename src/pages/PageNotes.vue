@@ -5,7 +5,7 @@
         indeterminate
         size="50px"
         color="blue"
-        class="q-ma-md "
+        class="q-ma-md"
       />
     </div>
     <div v-else>
@@ -44,8 +44,9 @@
                   v-model="selectedNoteTitle"
                   class="q-pb-lg"
                   :rules="[
-                    val =>
-                      (val.length != 0 && val.length <= 60) || 'Titulo inválido'
+                    (val) =>
+                      (val.length != 0 && val.length <= 60) ||
+                      'Titulo inválido',
                   ]"
                 />
                 <q-input
@@ -53,7 +54,7 @@
                   filled
                   autogrow
                   label="Nota"
-                  :rules="[val => val.length != 0 || 'Nota inválida']"
+                  :rules="[(val) => val.length != 0 || 'Nota inválida']"
                 />
               </div>
             </q-card-section>
@@ -83,6 +84,7 @@
 import { Vue, Component, Watch } from "vue-property-decorator";
 import { IUser } from "../models/modelUser";
 import { INotation } from "../models/modelNotation";
+import { showMessage } from "src/utils/MessageError";
 
 @Component
 export default class Notes extends Vue {
@@ -94,6 +96,10 @@ export default class Notes extends Vue {
   selectedNoteTitle: string = "";
   selectedNoteId: string = "";
   selectedNoteBody: string = "";
+  columns = [
+    { field: (row: INotation) => `${row.title}` },
+    { field: (row: INotation) => `${this.dateFormatter(row.created_at)}` },
+  ];
 
   noteClick(_: any, notation: INotation) {
     this.selectedNoteTitle = notation.title || "";
@@ -103,7 +109,6 @@ export default class Notes extends Vue {
   }
 
   created() {
-    this.isAuthenticate();
     this.getme().then(() => {
       this.getNotation().then(() => {
         this.loading = false;
@@ -113,27 +118,14 @@ export default class Notes extends Vue {
 
   async deleteNote() {
     try {
-      await this.$axios.delete("/notation/", {
-        data: { id: this.selectedNoteId }
+      const repsonse = await this.$axios.delete("/notation/", {
+        data: { id: this.selectedNoteId },
       });
       await this.getNotation();
+      showMessage.success(repsonse);
       this.openModal = false;
-      this.$q.notify({
-        message: "Nota deletada",
-        color: "green"
-      });
-    } catch (error) {
-      try {
-        this.$q.notify({
-          message: error.response.data.message,
-          color: "red-5"
-        });
-      } catch (e) {
-        this.$q.notify({
-          message: "Ops, algo deu errado",
-          color: "red-5"
-        });
-      }
+    } catch (error: any) {
+      showMessage.error(error);
     }
   }
 
@@ -142,44 +134,45 @@ export default class Notes extends Vue {
       const response = await this.$axios.get("/notation");
       this.dataOriginal = response.data.notations as INotation[];
       this.data = this.dataOriginal;
-    } catch (error) {
-      try {
-        this.$q.notify({
-          message: error.response.data.message,
-          color: "red-5"
-        });
-      } catch (e) {
-        this.$q.notify({
-          message: "Ops, algo deu errado",
-          color: "red-5"
-        });
-      }
+    } catch (error: any) {
+      showMessage.error(error);
     }
   }
 
-  @Watch("filterKey")
-  filter() {
-    this.data = [
-      ...this.dataOriginal.filter(
-        e =>
-          e.title.toLowerCase().includes(this.filterKey.toLowerCase()) ||
-          e.body.toLowerCase().includes(this.filterKey.toLowerCase())
-      )
-    ];
-  }
   async getme() {
+    const response = await this.$axios.get("/user/me");
+    const user = response.data as IUser;
+    localStorage.setItem("user", JSON.stringify(user));
+  }
+
+  async putNotation() {
     try {
-      this.$axios.defaults.headers = {
-        Authorization: `Bearer ${localStorage.getItem("token") || ""}`
-      };
-      const response = await this.$axios.get("/user/me");
-      const user = response.data as IUser;
-      await localStorage.setItem("user", JSON.stringify(user));
-    } catch (error) {
-      if (error.response.status == 401) {
-        localStorage.clear();
-        this.$router.push({ name: "home" });
-      }
+      const response = await this.$axios.put("/notation", {
+        id: this.selectedNoteId,
+        title: this.selectedNoteTitle,
+        body: this.selectedNoteBody,
+      });
+
+      await this.getNotation();
+      showMessage.success(response);
+
+      this.openModal = false;
+    } catch (error: any) {
+      showMessage.error(error);
+    }
+  }
+
+  async postNotation() {
+    try {
+      const response = await this.$axios.post("/notation", {
+        title: this.selectedNoteTitle,
+        body: this.selectedNoteBody,
+      });
+      await this.getNotation();
+      showMessage.success(response);
+      this.openModal = false;
+    } catch (error: any) {
+      showMessage.error(error);
     }
   }
 
@@ -188,85 +181,16 @@ export default class Notes extends Vue {
     return dateFormatted.toLocaleDateString();
   }
 
-  async putNotation() {
-    try {
-      const response = await this.$axios.put("/notation", {
-        id: this.selectedNoteId,
-        title: this.selectedNoteTitle,
-        body: this.selectedNoteBody
-      });
-      this.$q.notify({
-        message: response.data.message,
-        color: "green"
-      });
-
-      await this.getNotation();
-
-      this.openModal = false;
-    } catch (error) {
-      try {
-        this.$q.notify({
-          message: error.response.data.message,
-          color: "red-5"
-        });
-      } catch (e) {
-        this.$q.notify({
-          message: "Ops. algo deu errado",
-          color: "red-5"
-        });
-      }
-    }
+  @Watch("filterKey")
+  filter() {
+    this.data = [
+      ...this.dataOriginal.filter(
+        (e) =>
+          e.title.toLowerCase().includes(this.filterKey.toLowerCase()) ||
+          e.body.toLowerCase().includes(this.filterKey.toLowerCase())
+      ),
+    ];
   }
-
-  async postNotation() {
-    try {
-      const response = await this.$axios.post("/notation", {
-        title: this.selectedNoteTitle,
-        body: this.selectedNoteBody
-      });
-      await this.getNotation();
-
-      this.$q.notify({
-        message: response.data.message,
-        color: "green"
-      });
-
-      this.openModal = false;
-    } catch (error) {
-      try {
-        this.$q.notify({
-          message: error.response.data.message,
-          color: "red-5"
-        });
-      } catch (e) {
-        this.$q.notify({
-          message: "Ops. algo deu errado",
-          color: "red-5"
-        });
-      }
-    }
-  }
-
-  async isAuthenticate() {
-    let modelUser: IUser;
-    const user = (await localStorage.getItem("user")) || "";
-    try {
-      modelUser = JSON.parse(user);
-    } catch (error) {
-      this.$router.push({
-        name: "home"
-      });
-    }
-  }
-
-  columns = [
-    {
-      field: (row: INotation) => `${row.title}`
-    },
-    {
-      field: (row: INotation) => `${this.dateFormatter(row.created_at)}`
-    }
-  ];
 }
 </script>
 

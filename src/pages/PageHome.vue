@@ -22,28 +22,10 @@
 </template>
 
 <script lang="ts">
-import { IUser } from "src/models/modelUser";
 import { Vue, Component } from "vue-property-decorator";
 
 @Component
 export default class Home extends Vue {
-  created() {
-    this.isAuthenticate();
-  }
-
-  async isAuthenticate() {
-    let modelUser: IUser;
-    const user = (await localStorage.getItem("user")) || "";
-    try {
-      modelUser = JSON.parse(user);
-      if (modelUser.token) {
-        this.$router.push({
-          name: "notes",
-        });
-      }
-    } catch (error) {}
-  }
-
   goToCreate() {
     this.$router.push({ name: "create" });
   }

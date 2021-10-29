@@ -7,7 +7,9 @@
             <q-menu fit>
               <q-list style="min-width: 100px">
                 <q-item clickable>
-                  <q-item-section @click="toHome">App Notation</q-item-section>
+                  <q-item-section @click="toHome"
+                    >App Notation</q-item-section
+                  >
                 </q-item>
                 <q-item clickable>
                   <q-item-section @click="toAbout">Sobre</q-item-section>
@@ -20,8 +22,7 @@
           <div class="pr-50" @click="toHome">App Notation</div>
           <div class="pr-50" @click="toAbout">Sobre</div>
         </q-toolbar-title>
-        <Avatar/>
-        
+        <Avatar />
       </q-toolbar>
     </q-header>
     <q-page-container>
@@ -29,6 +30,23 @@
     </q-page-container>
   </q-layout>
 </template>
+
+<script lang="ts">
+import { Vue, Component } from "vue-property-decorator";
+import Avatar from "pages/components/AvatarActions.vue";
+
+@Component({
+  components: { Avatar },
+})
+export default class Layout extends Vue {
+  toHome() {
+    this.$router.push({ name: "notes" });
+  }
+  toAbout() {
+    this.$router.push({ name: "about" });
+  }
+}
+</script>
 
 <style scoped>
 .pr-50 {
@@ -46,21 +64,3 @@
   }
 }
 </style>
-
-<script lang="ts">
-import { Vue, Component } from "vue-property-decorator";
-import Avatar from "pages/components/AvatarActions.vue"
-@Component({
-  components: {
-    Avatar
-  }
-})
-export default class Layout extends Vue {
-  toHome() {
-    this.$router.push({ name: "notes" });
-  }
-  toAbout() {
-    this.$router.push({ name: "about" });
-  }
-}
-</script>
