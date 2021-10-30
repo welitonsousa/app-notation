@@ -1,6 +1,7 @@
 import axios, { AxiosInstance, AxiosResponse } from 'axios';
 import { boot } from 'quasar/wrappers';
 import { showMessage } from 'src/utils/MessageError';
+
 declare module 'vue/types/vue' {
   interface Vue {
     $axios: AxiosInstance;

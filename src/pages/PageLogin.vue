@@ -46,7 +46,6 @@
 <script lang="ts">
 import { Vue, Component } from "vue-property-decorator";
 import { Validations } from "src/utils/validations";
-import { IUser } from "src/models/modelUser";
 import { showMessage } from "src/utils/MessageError";
 
 @Component
@@ -60,14 +59,10 @@ export default class Home extends Vue {
   async login() {
     this.loading = true;
     try {
-      const response = await this.$axios.post("/sign", {
+      await this.$store.dispatch("user/login", {
         email: this.email,
         password: this.password,
       });
-      showMessage.success(response);
-      const user = response.data as IUser;
-      localStorage.setItem("user", JSON.stringify(user));
-      localStorage.setItem("token", user.token);
       this.$router.push({ name: "notes" });
     } catch (error: any) {
       showMessage.error(error);

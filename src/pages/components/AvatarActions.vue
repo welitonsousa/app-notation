@@ -1,7 +1,7 @@
 <template>
   <div>
     <q-btn-dropdown
-      v-if="userName != ''"
+      v-if="user && user.user"
       class="glossy"
       color="white"
       label="Configurações"
@@ -35,11 +35,11 @@
             <q-spinner color="primary" />
           </q-avatar>
           <q-avatar size="72px" v-else>
-            <img v-if="picture" :src="picture" />
+            <img v-if="user && user.picture" :src="user.picture" />
             <img v-else src="../../assets/user.png" />
           </q-avatar>
 
-          <div class="text-subtitle1 q-mt-md q-mb-xs">{{ userName }}</div>
+          <div class="text-subtitle1 q-mt-md q-mb-xs">{{ user.user }}</div>
           <q-btn
             label="Sair da conta"
             color="red"
@@ -57,7 +57,6 @@
 </template>
 
 <script lang="ts">
-import { IUser } from "src/models/modelUser";
 import { Vue, Component } from "vue-property-decorator";
 import { showMessage } from "src/utils/MessageError";
 import UpdatePass from "pages/components/ModalUpdatePass.vue";
@@ -68,36 +67,31 @@ import UpdatePass from "pages/components/ModalUpdatePass.vue";
   },
 })
 export default class Avatar extends Vue {
-  user?: IUser;
   viewUpdatePass = false;
-  userName = "";
-  picture = "";
   loadingImage = false;
 
-  created() {
-    this.getUser();
+  get user () {
+    return this.$store.state.user.user
+  }
+  set user (user) {
+    this.$store.commit('user/setUser', user)
   }
 
   showModal() {
     this.viewUpdatePass = true;
   }
+ 
   hideModal(value: boolean) {
     this.viewUpdatePass = value;
   }
 
   async handleFileChange(evt: any) {
-    const form = new FormData();
-    form.append("files", evt.target.files[0]);
-
     try {
-      this.loadingImage = true;
-      const response = await this.$axios.put("/user/picture", form, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
+      const form = new FormData();
+      form.append("files", evt.target.files[0]);
 
-      this.picture = response.data.picture;
-      this.user!.picture = this.picture;
-      localStorage.setItem("user", JSON.stringify(this.user));
+      this.loadingImage = true;
+      await this.$store.dispatch("user/changePicture", form);
     } catch (error: any) {
       showMessage.error(error);
     } finally {
@@ -105,17 +99,8 @@ export default class Avatar extends Vue {
     }
   }
 
-  async getUser() {
-    const user = JSON.parse(localStorage.user || "");
-    this.user = user;
-    this.userName = this.user!.user || "";
-    this.picture = this.user!.picture || "";
-  }
-
-  async logOut() {
-    localStorage.clear();
-    this.userName = "";
-    this.picture = "";
+  logOut() {
+    this.$store.commit('user/logout')
     this.$router.push({ name: "home" });
   }
 }
