@@ -122,7 +122,7 @@ export default class UpdatePass extends Vue {
       };
       const response = await this.$axios.put("/user/pass", data);
       if (this.logOutAll) {
-        localStorage.clear();
+        this.$store.commit("user/logout");
         this.$router.push({ name: "home" });
       }
       showMessage.success(response);

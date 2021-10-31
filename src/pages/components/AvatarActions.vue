@@ -9,7 +9,7 @@
     >
       <div class="row no-wrap q-pa-md">
         <div class="column">
-          <div class="text-h6 q-mb-md">Configurações</div>
+          <div class="text-h6 q-mb-md">Configuraçõessss</div>
 
           <q-btn
             class="q-mb-md"
