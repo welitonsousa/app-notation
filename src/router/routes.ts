@@ -24,6 +24,7 @@ const authRoute = (to: any, from: any, next: any) => {
 }
 
 const routes: RouteConfig[] = [
+  { path: '/politicas', name: 'notes', component: () => import('pages/Politicas.vue')},
   {
     path: '/',
     component: () => import('layouts/LayoutAuthenticate.vue'),
