@@ -24,7 +24,6 @@ const authRoute = (to: any, from: any, next: any) => {
 }
 
 const routes: RouteConfig[] = [
-  { path: '/politicas', name: 'notes', component: () => import('pages/Politicas.vue')},
   {
     path: '/',
     component: () => import('layouts/LayoutAuthenticate.vue'),
@@ -36,6 +35,7 @@ const routes: RouteConfig[] = [
       { path: '/notes', name: 'notes', component: () => import('pages/PageNotes.vue'), beforeEnter: authRoute },
     ]
   },
+  { path: '/politicas', name: 'notes', component: () => import('pages/Politicas.vue')},
   {
     path: '*',
     component: () => import('src/pages/PageNotFound.vue')
