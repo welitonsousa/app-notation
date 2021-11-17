@@ -49,13 +49,16 @@
                       'Titulo inválido',
                   ]"
                 />
-                <q-input
-                  v-model="selectedNoteBody"
+                <q-editor v-model="selectedNoteBody" min-height="5rem" 
+                  label="Nota"
                   filled
                   autogrow
-                  label="Nota"
                   :rules="[(val) => val.length != 0 || 'Nota inválida']"
+                
                 />
+                <!-- <q-input
+                  v-model=""
+                /> -->
               </div>
             </q-card-section>
 
