@@ -65,12 +65,6 @@
                         list: 'only-icons',
                         options: ['left', 'center', 'right', 'justify'],
                       },
-                      {
-                        label: $q.lang.editor.align,
-                        icon: $q.iconSet.editor.align,
-                        fixedLabel: true,
-                        options: ['left', 'center', 'right', 'justify'],
-                      },
                     ],
                     [
                       'bold',
