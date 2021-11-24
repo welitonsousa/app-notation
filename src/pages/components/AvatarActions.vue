@@ -17,6 +17,12 @@
             color="primary"
             @click="showModal"
           />
+          <q-btn
+            class="q-mb-md"
+            label="Remover Imagem"
+            color="primary"
+            @click="removeImage"
+          />
 
           <label class="file-select">
             <div class="select-button">Alterar Imagem</div>
@@ -60,6 +66,7 @@
 import { Vue, Component } from "vue-property-decorator";
 import { showMessage } from "src/utils/MessageError";
 import UpdatePass from "pages/components/ModalUpdatePass.vue";
+import { log } from "console";
 
 @Component({
   components: {
@@ -70,19 +77,32 @@ export default class Avatar extends Vue {
   viewUpdatePass = false;
   loadingImage = false;
 
-  get user () {
-    return this.$store.state.user.user
+  get user() {
+    return this.$store.state.user.user;
   }
-  set user (user) {
-    this.$store.commit('user/setUser', user)
+  set user(user) {
+    this.$store.commit("user/setUser", user);
   }
 
   showModal() {
     this.viewUpdatePass = true;
   }
- 
+
   hideModal(value: boolean) {
     this.viewUpdatePass = value;
+  }
+
+  async removeImage(evt: any) {
+    try {
+      const form = new FormData();
+      form.append("files", "");
+      this.loadingImage = true;
+      await this.$store.dispatch("user/changePicture", form);
+    } catch (error) {
+      showMessage.error(error);
+    } finally {
+      this.loadingImage = false;
+    }
   }
 
   async handleFileChange(evt: any) {
@@ -100,7 +120,7 @@ export default class Avatar extends Vue {
   }
 
   logOut() {
-    this.$store.commit('user/logout')
+    this.$store.commit("user/logout");
     this.$router.push({ name: "home" });
   }
 }
