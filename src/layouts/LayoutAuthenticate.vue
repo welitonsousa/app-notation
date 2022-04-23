@@ -7,20 +7,26 @@
             <q-menu fit>
               <q-list style="min-width: 100px">
                 <q-item clickable>
-                  <q-item-section @click="toHome"
-                    >App Notation</q-item-section
-                  >
+                  <q-item-section @click="toRouter('initial')">App Notation</q-item-section>
                 </q-item>
                 <q-item clickable>
-                  <q-item-section @click="toAbout">Sobre</q-item-section>
+                  <q-item-section @click="toRouter('about')">Sobre</q-item-section>
+                </q-item>
+                <q-item clickable>
+                  <q-item-section @click="toRouter('contact')">Contato</q-item-section>
+                </q-item>
+                <q-item clickable>
+                  <q-item-section @click="toRouter('help')">Ajuda</q-item-section>
                 </q-item>
               </q-list>
             </q-menu>
           </q-btn>
         </q-toolbar-title>
         <q-toolbar-title class="row desktop-buttons">
-          <div class="pr-50" @click="toHome">App Notation</div>
-          <div class="pr-50" @click="toAbout">Sobre</div>
+          <div class="pr-50" @click="toRouter('initial')">App Notation</div>
+          <div class="pr-50" @click="toRouter('about')">Sobre</div>
+          <div class="pr-50" @click="toRouter('contact')">Contato</div>
+          <div class="pr-50" @click="toRouter('help')">Ajuda</div>
         </q-toolbar-title>
         <Avatar />
       </q-toolbar>
@@ -39,11 +45,8 @@ import Avatar from "pages/components/AvatarActions.vue";
   components: { Avatar },
 })
 export default class Layout extends Vue {
-  toHome() {
-    this.$router.push({ name: "initial" });
-  }
-  toAbout() {
-    this.$router.push({ name: "about" });
+  toRouter(name: string) {
+    this.$router.push({name: name})
   }
 }
 </script>

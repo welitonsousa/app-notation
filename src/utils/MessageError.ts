@@ -2,7 +2,7 @@
 import { AxiosResponse } from "axios";
 import { Vue } from "vue-property-decorator";
 
-class Error extends Vue {
+class Message extends Vue {
 	error(error: any) {
 		try {
 			this.$q.notify({
@@ -24,5 +24,5 @@ class Error extends Vue {
 	}
 }
 
-const showMessage = new Error()
+const showMessage = new Message()
 export { showMessage }

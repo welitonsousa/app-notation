@@ -32,7 +32,10 @@ const routes: RouteConfig[] = [
       { path: '/create', name: 'create', component: () => import('src/pages/PageCreateUser.vue'), beforeEnter: noAuthRoute },
       { path: '/login', name: 'login', component: () => import('pages/PageLogin.vue'), beforeEnter: noAuthRoute },
       { path: '/about', name: 'about', component: () => import('pages/PageAbout.vue') },
-      { path: '/initial', name: 'initial', component: () => import('pages/PageInitial.vue'), beforeEnter: authRoute },
+      { path: '/home', name: 'initial', component: () => import('pages/PageInitial.vue'), beforeEnter: authRoute },
+      { path: '/help', name: 'help', component: () => import('pages/PageHelp.vue')},
+      { path: '/contact', name: 'contact', component: () => import('pages/PageContact.vue')},
+      { path: '/reset-password', name: 'reset', component: () => import('pages/ResetPass/PageResetPass.vue')},
     ]
   },
   { path: '/politicas', name: 'initial', component: () => import('pages/Politicas.vue')},

@@ -5,15 +5,13 @@ const state = () => ({
 	token: ''
 })
 
-const getters = {}
-
 const actions = {
-	
+
 	async getUser({ commit }: any) {
 		const { data } = await Vue.prototype.$axios.get('/user/me')
 		commit('setUser', data)
 	},
-	
+
 	async login({ commit }: any, payload: any) {
 		const { data } = await Vue.prototype.$axios.post("/sign", {
 			email: payload.email,
@@ -22,7 +20,7 @@ const actions = {
 		commit('setUser', data)
 		commit('setToken', data.token)
 	},
-	
+
 	async changePicture({ commit }: any, form: any) {
 		const { data } = await Vue.prototype.$axios.put("/user/picture", form, {
 			headers: { "Content-Type": "multipart/form-data" },
@@ -32,7 +30,7 @@ const actions = {
 }
 
 const mutations = {
-	
+
 	initUser(store: any) {
 		const user = localStorage.user || '{}'
 		const token = localStorage.token || ''
@@ -68,7 +66,6 @@ const mutations = {
 export default {
 	namespaced: true,
 	state,
-	getters,
 	actions,
 	mutations
 }

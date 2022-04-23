@@ -3,7 +3,7 @@
     <div class="row">
       <div class="col" />
       <div class="col-12 col-md-6 text-justify q-pl-lg">
-        <h4 class="text-center">App Notation</h4>
+        <h4 class="text-center">Tela de ajuda</h4>
         <p>
           O APP Notation é um site que busca ajudar quem precisa criar notas
           diariamente. No App Notation os usuários podem fazer inúmeras notas sem se preocupar

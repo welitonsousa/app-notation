@@ -34,6 +34,7 @@
                 <q-circular-progress indeterminate color="white" size="20px" />
               </q-btn>
               <q-btn v-else color="primary" type="submit" label="Confirmar" />
+              <q-btn flat no-caps label="Esqueci minha senha" color="blue" @click="toReset"/>
             </div>
           </q-form>
         </q-card-section>
@@ -69,6 +70,9 @@ export default class Home extends Vue {
     } finally {
       this.loading = false;
     }
+  }
+  toReset() {
+    this.$router.push({name: 'reset'})
   }
 }
 </script>
