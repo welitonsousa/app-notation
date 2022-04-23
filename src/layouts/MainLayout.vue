@@ -58,7 +58,7 @@ import Avatar from "pages/components/AvatarActions.vue"
 })
 export default class Layout extends Vue {
   toHome() {
-    this.$router.push({ name: "notes" });
+    this.$router.push({ name: "initial" });
   }
   toAbout() {
     this.$router.push({ name: "about" });

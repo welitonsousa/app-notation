@@ -7,7 +7,7 @@ const noAuthRoute = (to: any, from: any, next: any) => {
     Vue.prototype.$axios.defaults.headers = {
       Authorization: `Bearer ${localStorage.getItem("token") || ""}`,
     };
-    next('/notes');
+    next('/initial');
   }
   else next()
 }
@@ -32,10 +32,10 @@ const routes: RouteConfig[] = [
       { path: '/create', name: 'create', component: () => import('src/pages/PageCreateUser.vue'), beforeEnter: noAuthRoute },
       { path: '/login', name: 'login', component: () => import('pages/PageLogin.vue'), beforeEnter: noAuthRoute },
       { path: '/about', name: 'about', component: () => import('pages/PageAbout.vue') },
-      { path: '/notes', name: 'notes', component: () => import('pages/PageNotes.vue'), beforeEnter: authRoute },
+      { path: '/initial', name: 'initial', component: () => import('pages/PageInitial.vue'), beforeEnter: authRoute },
     ]
   },
-  { path: '/politicas', name: 'notes', component: () => import('pages/Politicas.vue')},
+  { path: '/politicas', name: 'initial', component: () => import('pages/Politicas.vue')},
   {
     path: '*',
     component: () => import('src/pages/PageNotFound.vue')
