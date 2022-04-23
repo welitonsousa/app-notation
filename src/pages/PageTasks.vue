@@ -40,7 +40,7 @@
           <q-form @submit="selectedTodoId ? putTodo() : postTodo()">
             <q-card-section class="row">
               <div class="width">
-                <q-input label="Titulo" v-model="selectedTodoTitle" />
+                <q-input label="Titulo" v-model="selectedTodoTitle"/>
                 <div v-for="(task, index) in selectedTodoTasks" :key="index">
                   <q-item clickable>
                     <q-checkbox v-model="task.checked" />
@@ -128,7 +128,7 @@ export default class Todos extends Vue {
   todoClick(_: any, todo: ITodo) {
     this.selectedTodoTitle = todo.title || "";
     this.selectedTodoId = todo.id || "";
-    this.selectedTodoTasks = [...todo.tasks];
+    this.selectedTodoTasks = todo.tasks || [];
     this.openModal = true;
   }
 
@@ -194,7 +194,7 @@ export default class Todos extends Vue {
     try {
       const response = await this.$axios.post("/todo", {
         title: this.selectedTodoTitle,
-        body: this.selectedTodoTasks
+        tasks: this.selectedTodoTasks
       });
       await this.getTodos();
       showMessage.success(response);
