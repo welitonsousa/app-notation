@@ -25,7 +25,7 @@
           />
 
           <label class="file-select">
-            <div class="select-button">Alterar Imagem</div>
+            <div class="select-button">ALTERAR IMAGEM</div>
             <input
               type="file"
               @change="handleFileChange"

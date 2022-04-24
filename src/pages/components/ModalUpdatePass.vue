@@ -10,7 +10,7 @@
           <q-input
             v-model="oldPass"
             outlined
-            label="Senha"
+            label="Senha atual"
             :type="isPwdPass ? 'password' : 'text'"
             :rules="[(val) => validations.passwordValidator(val)]"
           >
@@ -26,7 +26,7 @@
           <q-input
             v-model="newPass"
             outlined
-            label="Senha"
+            label="Nova senha"
             :type="isPwdNewPass ? 'password' : 'text'"
             :rules="[(val) => validations.passwordValidator(val)]"
           >
@@ -42,7 +42,7 @@
           <q-input
             v-model="confirmNewPass"
             outlined
-            label="Senha"
+            label="Confirme a nova senha"
             :type="isPwdPassConfirmNewPass ? 'password' : 'text'"
             :rules="[
               (val) => validations.confirmPasswordValidator(val, newPass),
@@ -63,7 +63,7 @@
             <q-checkbox
               class="q-mb-md"
               v-model="logOutAll"
-              label="Desconectar todos os dispovitivos"
+              label="Desconectar todos os dispositivos"
             />
           </div>
 

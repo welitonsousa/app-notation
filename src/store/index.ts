@@ -1,5 +1,6 @@
-import user from './modules/ModelUser';
+import user from './modules/ModuleUser';
 import reset from './modules/ModuleReset'
+import contact from './modules/ModuleContact'
 import { Vue } from 'vue-property-decorator'
 import Vuex from 'vuex'
 
@@ -9,5 +10,6 @@ export default new Vuex.Store({
 	modules: {
 		user,
     reset,
+    contact,
 	}
 })
