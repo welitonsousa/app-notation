@@ -7,7 +7,7 @@
             <q-menu fit>
               <q-list style="min-width: 100px">
                 <q-item clickable>
-                  <q-item-section @click="toRouter('initial')">App Notation</q-item-section>
+                  <q-item-section @click="toRouter('home')">App Notation</q-item-section>
                 </q-item>
                 <q-item clickable>
                   <q-item-section @click="toRouter('about')">Sobre</q-item-section>
@@ -23,7 +23,7 @@
           </q-btn>
         </q-toolbar-title>
         <q-toolbar-title class="row desktop-buttons">
-          <div class="pr-50" @click="toRouter('initial')">App Notation</div>
+          <div class="pr-50" @click="toRouter('home')">App</div>
           <div class="pr-50" @click="toRouter('about')">Sobre</div>
           <div class="pr-50" @click="toRouter('contact')">Contato</div>
           <div class="pr-50" @click="toRouter('help')">Ajuda</div>

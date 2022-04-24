@@ -121,7 +121,6 @@ export default class Avatar extends Vue {
 
   logOut() {
     this.$store.commit("user/logout");
-    this.$router.push({ name: "home" });
   }
 }
 </script>

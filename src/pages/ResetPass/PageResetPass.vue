@@ -1,7 +1,7 @@
 <template>
   <div class="row justify-center q-ma-md">
     <div>
-      <h2>Recupere sua senha</h2>
+      <h4>Recupere sua senha</h4>
 
 
       <q-card class="q-pa-lg text-right">

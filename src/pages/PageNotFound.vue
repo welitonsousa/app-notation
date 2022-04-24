@@ -10,13 +10,10 @@
       </div>
 
       <q-btn
-        class="q-mt-xl"
         color="white"
         text-color="blue"
-        unelevated
-        to="/"
+        @click="toHome"
         label="Voltar para a Home"
-        no-caps
       />
     </div>
   </div>
@@ -26,5 +23,9 @@
 import { Vue, Component } from 'vue-property-decorator';
 
 @Component
-export default class Error404 extends Vue {}
+export default class Error404 extends Vue {
+  toHome() {
+    this.$router.push({name: 'home'})
+  }
+}
 </script>

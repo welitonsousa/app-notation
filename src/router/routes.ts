@@ -14,7 +14,7 @@ const noAuthRoute = (to: any, from: any, next: any) => {
 
 const authRoute = (to: any, from: any, next: any) => {
   const token = localStorage.token
-  if (!token) next('/')
+  if (!token) next('/initial')
   else {
     Vue.prototype.$axios.defaults.headers = {
       Authorization: `Bearer ${localStorage.getItem("token") || ""}`,
@@ -28,17 +28,17 @@ const routes: RouteConfig[] = [
     path: '/',
     component: () => import('layouts/LayoutAuthenticate.vue'),
     children: [
-      { path: '/', name: 'home', component: () => import('pages/PageHome.vue'), beforeEnter: noAuthRoute },
+      { path: '/initial', name: 'initial', component: () => import('pages/PageHome.vue'), beforeEnter: noAuthRoute },
       { path: '/create', name: 'create', component: () => import('src/pages/PageCreateUser.vue'), beforeEnter: noAuthRoute },
       { path: '/login', name: 'login', component: () => import('pages/PageLogin.vue'), beforeEnter: noAuthRoute },
       { path: '/about', name: 'about', component: () => import('pages/PageAbout.vue') },
-      { path: '/home', name: 'initial', component: () => import('pages/PageInitial.vue'), beforeEnter: authRoute },
+      { path: '/home', name: 'home', component: () => import('pages/PageInitial.vue'), beforeEnter: authRoute },
       { path: '/help', name: 'help', component: () => import('pages/PageHelp.vue')},
       { path: '/contact', name: 'contact', component: () => import('pages/PageContact.vue')},
       { path: '/reset-password', name: 'reset', component: () => import('pages/ResetPass/PageResetPass.vue')},
     ]
   },
-  { path: '/politicas', name: 'initial', component: () => import('pages/Politicas.vue')},
+  { path: '/politicas', name: 'politics', component: () => import('pages/Politicas.vue')},
   {
     path: '*',
     component: () => import('src/pages/PageNotFound.vue')

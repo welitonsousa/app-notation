@@ -64,7 +64,7 @@ export default class Home extends Vue {
         email: this.email,
         password: this.password,
       });
-      this.$router.push({ name: "initial" });
+      this.$router.push({ name: "home" });
     } catch (error: any) {
       showMessage.error(error);
     } finally {

@@ -1,4 +1,6 @@
+import { Router } from 'src/router'
 import { Vue } from 'vue-property-decorator'
+
 
 const state = () => ({
 	user: {},
@@ -60,6 +62,7 @@ const mutations = {
 		state.user = {}
 		state.token = ''
 		localStorage.clear();
+    Router.push({name: 'initial'})
 	}
 }
 
