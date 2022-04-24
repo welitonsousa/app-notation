@@ -3,12 +3,14 @@
     <q-input
       v-model="state.password"
       label="Nova senha"
+      type="password"
       outlined
       :rules="[(val) => validations.passwordValidator(val)]"
     />
     <q-input
       v-model="state.confirmPassword"
       label="Confirme a senha"
+      type="password"
       outlined
       :rules="[(val) => validations.confirmPasswordValidator(state.password, state.confirmPassword)]"
     />

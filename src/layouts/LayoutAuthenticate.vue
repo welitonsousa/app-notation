@@ -23,7 +23,7 @@
           </q-btn>
         </q-toolbar-title>
         <q-toolbar-title class="row desktop-buttons">
-          <div class="pr-50" @click="toRouter('home')">App</div>
+          <div class="pr-50" @click="toRouter('home')">App Notation</div>
           <div class="pr-50" @click="toRouter('about')">Sobre</div>
           <div class="pr-50" @click="toRouter('contact')">Contato</div>
           <div class="pr-50" @click="toRouter('help')">Ajuda</div>
