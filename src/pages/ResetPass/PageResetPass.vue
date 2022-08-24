@@ -1,9 +1,7 @@
 <template>
   <div class="row justify-center q-ma-md">
     <div>
-      <h4>Recupere sua senha</h4>
-
-
+      <h4 class="text-center">Recupere sua senha</h4>
       <q-card class="q-pa-lg text-right">
         <p v-if="state.step == 0" class="text-center">
           Enviaremos um código único de verificação de conta através do seu
